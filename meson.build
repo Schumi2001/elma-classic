@@ -67,7 +67,7 @@ if(cpp.get_id() == 'msvc')
         '/Zc:strictStrings-',
     ]
 else
-    arcpp_argsgs = [
+    cpp_args = [
         '-Wno-writable-strings',
         '-Wno-deprecated-declarations',
         '-Wno-nonportable-include-path',
