@@ -117,7 +117,6 @@ pic8::pic8( int xsizep, int ysizep ) {
     nemdestrukt = 0;
     sormuttomb = NULL;
     szegmuttomb = NULL;
-    fizkep = 0;
     sprite = NULL;
     spritehossz = NULL;
     success = lefoglal( xsizep, ysizep );
@@ -129,7 +128,6 @@ pic8::pic8( int xsizep, int ysizep, unsigned char** ppc ) {
     nemdestrukt = 1;
     sormuttomb = NULL;
     szegmuttomb = NULL;
-    fizkep = 0;
     sprite = NULL;
     spritehossz = NULL;
     if( xsizep == -12333 && ysizep == -12334 ) {
@@ -149,7 +147,6 @@ pic8::pic8( char* nev, FILE* h ) {
     success = 0;
     sormuttomb = NULL;
     szegmuttomb = NULL;
-    fizkep = 0;
     sprite = NULL;
     spritehossz = NULL;
 	// Kiterjesztes megkeresese:
@@ -177,10 +174,6 @@ pic8::pic8( char* nev, FILE* h ) {
 int pic8::save( char* nev, unsigned char* pal, FILE* h ) {
     if( !success ) {
         hiba( "pic8::save-ben nem success!" );
-        return 0;
-    }
-    if( fizkep ) {
-        hiba( "Fizikai kepernyore save hivasa!" );
         return 0;
     }
     // Kiterjesztes megkeresese:
@@ -223,16 +216,8 @@ void pic8::ppixel( int x, int y, unsigned char szin ) {
     if( x < 0 || x >= xsize || y < 0 || y >= ysize )
         return;
 
-    if( !fizkep ) {
-        sormuttomb[y][x] = szin;
-        return;
-    }
-	// Fizikai:
-	#ifdef W_95
-		hiba( "ppixel fizikaira!" );
-	#else
-		putpixel8_l( x, y, szin );
-	#endif
+    sormuttomb[y][x] = szin;
+    return;
 }
 
 unsigned char pic8::gpixel( int x, int y ) {
@@ -245,14 +230,7 @@ unsigned char pic8::gpixel( int x, int y ) {
     if( x < 0 || x >= xsize || y < 0 || y >= ysize )
         return 0;
 
-    if( !fizkep )
-        return sormuttomb[y][x];
-    else {
-        // Fizikai:
-        hiba( "gpixel fizikaira!" );
-        //return (unsigned char)gpixel_l( x, y );
-		return 0;
-	}
+    return sormuttomb[y][x];
 }
 
 #ifdef TEST
@@ -270,14 +248,7 @@ unsigned char* pic8::getptr( int y ) {
 			return 0;
 		}
 	#endif
-	if( !fizkep ) {
-		return sormuttomb[y];
-	}
-	else {
-		// Fizikai:
-		hiba( "pic8::getptr meghivasa fizikai kepernyore!" );
-		return NULL;
-	}
+	return sormuttomb[y];
 }
 
 #endif
@@ -287,8 +258,6 @@ void pic8::fillbox( unsigned char szin ) {
 }
 
 void pic8::fillbox( int x1, int y1, int x2, int y2, unsigned char szin ) {
-    if( fizkep )
-        hiba( "pic8::fillbox meghivasa fizikai kepernyore!" );
     if( x1 > x2 ) {
         int tmp = x1; x1 = x2; x2 = tmp;
     }
@@ -677,12 +646,6 @@ void blt8( pic8* pd, pic8* ps, int x, int y,
             hiba( "blt8 hivasa y2 == -10000 (default), de elotte nem mind!" );
             return;
         }
-	  #ifndef W_95
-		if( pd == Pscr8 && ps == Pscr8 ) {
-			hiba( "blt8 hivasa, dest es source is fizikai kepernyo!" );
-			return;
-		}
-	  #endif
 		if( !pd || !ps ) {
 			hiba( "blt8 hivasa, dest vagy source NULL!" );
 			return;
@@ -780,26 +743,17 @@ void blt8( pic8* pd, pic8* ps, int x, int y,
 										xkezd = x1;
 									if( xveg > x2 )
 										xveg = x2;
-									if( pd->fizkep )
-										hiba( "t4ruh5t" );
-										//putline8_l( x+xkezd-x1, desty,
-										//&ps->sormuttomb[sy][xkezd],
-										//xveg-xkezd+1 );
-									else
-										BYTECOPY( &pd->sormuttomb[desty][x+xkezd-x1],
+									BYTECOPY( &pd->sormuttomb[desty][x+xkezd-x1],
 										&ps->sormuttomb[sy][xkezd],
 										xveg-xkezd+1 );
 								}
 							}
 							else {
 								// Nem log ki:
-								if( pd->fizkep )
-									hiba( "68464" );
                                     //putline8_l( x+sx-x1, desty,
                                     //&ps->sormuttomb[sy][sx],
                                     //buffer[buf] );
-                                else
-									BYTECOPY( &pd->sormuttomb[desty][x+sx-x1],
+								BYTECOPY( &pd->sormuttomb[desty][x+sx-x1],
                                     &ps->sormuttomb[sy][sx],
                                     buffer[buf] );
                             }
@@ -822,32 +776,6 @@ void blt8( pic8* pd, pic8* ps, int x, int y,
 	}
 
 	// Most mar tuti jok koordok!
-	if( pd->fizkep ) {
-		// Fizikai kepernyore iras:
-		#ifdef W_95
-			hiba( "0895t" );
-		#else
-			int xmeret = x2-x1+1;
-			int dfy = y;
-			for( int fy = y1; fy <= y2; fy++ ) {
-				putline8_l( x, dfy++, &ps->sormuttomb[fy][x1], xmeret );
-			}
-			return;
-		#endif
-	}
-	if( ps->fizkep ) {
-		// Fizikai kepernyorol olvasas:
-		#ifdef W_95
-			hiba( "8795t" );
-		#else
-			int xmeret = x2-x1+1;
-			int dfy = y;
-			for( int fy = y1; fy <= y2; fy++ ) {
-				getline8_l( x1, fy, &pd->sormuttomb[dfy++][x], xmeret );
-			}
-			return;
-		#endif
-	}
 	// Memoria-memoria atvitel!
 	int xmeret = x2-x1+1;
 	int dfy = y;

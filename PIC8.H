@@ -24,7 +24,6 @@ public:
 	friend void setmode8_l( int res );
 protected:
 	// Sajat:
-	int fizkep;
 	int nemdestrukt;
 	int lefoglal( long xsize, long ysize );
 	void spritebeolvas( char* nev, FILE* h );
