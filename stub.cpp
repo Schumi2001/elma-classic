@@ -60,3 +60,13 @@ int mk_getstate(int unused) { return 0; }
 int mk_getextchar(void) { return 0; }
 
 void mk_emptychar(void) { }
+
+char* kodtobillnev( int billkod ) { return nullptr; }
+
+void initdsound( int secondaryeloir ) {}
+
+void di_reset_state( state_s* mut ) {}
+
+int controlaltnyomva( void ) { return 0; }
+
+void mv_exit( char* text ) { exit(0); }

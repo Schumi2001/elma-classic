@@ -294,7 +294,7 @@ void hang( void /*char* hivta*/ ) {
 
 	unsigned long pos = 0;
 	HRESULT hr; 
-	DWORD DwDXVersion;
+	DWORD DwDXVersion = 0; // TODO temporary undefined memory fix
 	if( DwDXVersion >= 0x500 )
 		hr = Pribuffer->GetCurrentPosition( NULL, &pos );
 	else {

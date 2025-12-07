@@ -26,7 +26,7 @@ elma_sources = files(
     'GOLYOK.CPP',
     'GOLYUTK.CPP',
     'GYURU.CPP',
-    'H_DUMMY.CPP',
+    'H_WAV.CPP',
     'JATEKOS.CPP',
     'KIRAJ320.CPP',
     'KISKEP.CPP',
@@ -53,12 +53,15 @@ elma_sources = files(
     'SZAKASZ.CPP',
     'TELJES.CPP',
     'TOPOL.CPP',
+    'UPGRADE.CPP',
     'UTKOZES.CPP',
     'UTKOZES2.CPP',
     'VALASZT2.CPP',
     'VEKT2.CPP',
-    'stub.cpp',
 )
+
+link_args = []
+win_subsystem = 'console'
 
 cpp = meson.get_compiler('cpp')
 if(cpp.get_id() == 'msvc')
@@ -66,6 +69,25 @@ if(cpp.get_id() == 'msvc')
         '/D_CRT_SECURE_NO_WARNINGS',
         '/Zc:strictStrings-',
     ]
+    if(host_machine.cpu_family() == 'x86')
+        win_subsystem = 'windows'
+        elma_sources += files(
+            'F_WIN/W_DD.CPP',
+            'F_WIN/W_DI.CPP',
+            'F_WIN/W_SOUND2.CPP',
+            'F_WIN/W_V.CPP',
+            'F_WIN/W_HHIGH.CPP',
+            'F_WIN/W_K.CPP',
+            'dxinc/getdxver.CPP',
+            )
+        link_args += [
+            'winmm.lib',
+            meson.project_source_root() + '/dxinc/ddraw.lib',
+            meson.project_source_root() + '/dxinc/dinput.lib',
+            meson.project_source_root() + '/dxinc/dxguid.lib',
+            meson.project_source_root() + '/dxinc/dsound.lib',
+        ]
+    endif
 else
     cpp_args = [
         '-Wno-writable-strings',
@@ -74,8 +96,17 @@ else
     ]
 endif
 
+if(host_machine.cpu_family() == 'x86_64')
+    elma_sources += files(
+        'H_DUMMY.CPP', 
+        'stub.cpp', 
+    )
+endif
+
 elma = executable(
     'elma',
     elma_sources,
-    cpp_args: cpp_args
+    cpp_args: cpp_args,
+    link_args: link_args,
+    win_subsystem: win_subsystem,
 )
