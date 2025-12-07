@@ -14,12 +14,13 @@ void k_memcpy( void *dest, const void *src, size_t n ) {
 
 static int  Fiben = 0;
 
+#ifndef _WIN32
+
 int fifirst( char* minta, char* filenev ) { return 1; }
 int finext( char* filenev ) { return 1; }
 void ficlose( void ) {}
 
-#if 0
-#ifdef W_95
+#else
 
 /*struct _finddata_t c_file;
     long hFile;
@@ -129,7 +130,9 @@ void ficlose( void ) {
 	}
 }
 
-#else
+#endif
+
+#if 0
 
 // DOS-os
 
@@ -176,7 +179,6 @@ void ficlose( void ) {
 	Fiben = 0;
 }
 
-#endif
 #endif
 
 #ifndef _WIN32

@@ -60,12 +60,22 @@ elma_sources = files(
     'stub.cpp',
 )
 
-elma = executable(
-    'elma',
-    elma_sources,
-    cpp_args: [
+cpp = meson.get_compiler('cpp')
+if(cpp.get_id() == 'msvc')
+    cpp_args = [
+        '/D_CRT_SECURE_NO_WARNINGS',
+        '/Zc:strictStrings-',
+    ]
+else
+    arcpp_argsgs = [
         '-Wno-writable-strings',
         '-Wno-deprecated-declarations',
         '-Wno-nonportable-include-path',
-    ],
+    ]
+endif
+
+elma = executable(
+    'elma',
+    elma_sources,
+    cpp_args: cpp_args
 )

@@ -4,8 +4,13 @@
 #include	<math.h>
 #include	<time.h>
 #include	<ctype.h>
+
 #ifndef _WIN32
 #include <unistd.h>
+#endif
+
+#ifdef _WIN32
+#include <io.h>
 #endif
 
 // Ez Win95-os verzio h file-ja, csak ennek egy szinten kell

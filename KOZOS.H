@@ -6,8 +6,13 @@ extern double K_pi;
 extern double K_pip2;
 extern double K_2pi;
 
-#ifdef W_95
+#ifdef _WIN32
 #define _fstrnicmp _strnicmp
+#define itoa _itoa
+#define strcmpi _strcmpi
+#define strlwr _strlwr
+#define access _access
+#define strupr _strupr
 #endif
 
 typedef char finame[20];

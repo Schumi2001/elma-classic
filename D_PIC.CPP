@@ -45,7 +45,7 @@ void  unlockbackbuffer_pic( void ) {
 	}
 }
 
-#if defined(W_95) || defined(__APPLE__) || defined(__linux__)
+#if defined(_WIN32) || defined(__APPLE__) || defined(__linux__)
 
 // WINDOWSOS:
 void  lockfrontbuffer_pic( void ) {
