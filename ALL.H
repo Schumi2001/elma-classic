@@ -1,9 +1,5 @@
 #include	<stdio.h>
 #include	<stdlib.h>
-#include	<io.h>
-#include	<dos.h>
-#include	<conio.h>
-//#include	<mem.h>
 #include	<string.h>
 #include	<math.h>
 #include	<time.h>
