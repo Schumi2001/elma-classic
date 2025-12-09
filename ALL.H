@@ -101,3 +101,5 @@
 #include "m_k.h"
 #include "m_v.h"
 #include "m_pic.h"
+
+#include "directinput_scancodes.h"
