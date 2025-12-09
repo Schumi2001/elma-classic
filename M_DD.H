@@ -1,17 +1,15 @@
 // m_dd.h
+#include <SDL_pixels.h>
 
 class pic8;
 class palyaleiro;
 class recorder;
 
 class ddpal {
-    friend void lassufizre(pic8* ppic, ddpal* ppal);
+    SDL_Color pal[256];
 
   public:
-    void* pddpal;
-
     ddpal(unsigned char* tomb);
-    ~ddpal(void);
     void set(void);
 };
 

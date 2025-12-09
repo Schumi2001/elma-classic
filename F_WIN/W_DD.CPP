@@ -53,15 +53,6 @@ int sdl_init() {
     SDL_GetWindowWMInfo(SDLWindow, &wmInfo);
     GhWnd = wmInfo.info.win.window;
 
-    SDL_Color pal[256];
-    for (int i = 0; i < 256; i++) {
-        pal[i].r = i & 0b00000111 << 5;
-        pal[i].g = i & 0b00111000 << 2;
-        pal[i].b = i & 0b11000000 << 0;
-        pal[i].a = 0xFF;
-    }
-    SDL_SetPaletteColors(SDLSurfacePaletted->format->palette, pal, 0, 256);
-
     return 0;
 }
 
@@ -123,35 +114,12 @@ void unlockfrontbuffer(void) {
 
 //	LPDIRECTDRAWPALETTE pddpal;
 ddpal::ddpal(unsigned char* tomb) {
-#if 0
-    pddpal = NULL;
-
-    PALETTEENTRY pe[256];
     for (int i = 0; i < 256; i++) {
-        pe[i].peRed = (unsigned char)(tomb[3 * i] << 2);
-        pe[i].peGreen = (unsigned char)(tomb[3 * i + 1] << 2);
-        pe[i].peBlue = (unsigned char)(tomb[3 * i + 2] << 2);
+        pal[i].r = tomb[3 * i] << 2;
+        pal[i].g = tomb[3 * i + 1] << 2;
+        pal[i].b = tomb[3 * i + 2] << 2;
+        pal[i].a = 0xFF;
     }
-    HRESULT ddrval = Pdd->CreatePalette(DDPCAPS_8BIT, pe, (LPDIRECTDRAWPALETTE*)&(pddpal), NULL);
-    if (ddrval != DD_OK) {
-        hiba("CreatePalette did not succeed!");
-    }
-#endif
 }
 
-ddpal::~ddpal(void) {
-#if 0
-    if (pddpal) {
-        ((LPDIRECTDRAWPALETTE)pddpal)->Release();
-    }
-#endif
-}
-
-void ddpal::set(void) {
-#if 0
-    HRESULT ddrval = Pddsprimary->SetPalette((LPDIRECTDRAWPALETTE)pddpal);
-    // Egyszer ez elojott, ugyhogy kiveszem:
-    // if( ddrval != DD_OK )
-    //	hiba( "SetPalette did not succeed!" );
-#endif
-}
+void ddpal::set(void) { SDL_SetPaletteColors(SDLSurfacePaletted->format->palette, pal, 0, 256); }
