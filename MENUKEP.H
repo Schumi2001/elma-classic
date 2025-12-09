@@ -11,7 +11,7 @@ extern pic8* Buffgolyo;
 
 extern abc8* Pmenuabc;
 
-extern ddpal* Pmenupal;
+extern sdl_pal* Pmenupal;
 extern unsigned char Menupaltomb[768];
 
 struct egyszovsor {

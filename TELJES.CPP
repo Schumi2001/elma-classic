@@ -91,7 +91,7 @@ void teljes(void) {
     tmpintro->fillbox(254);
     blt8(tmpintro, Pintro);
 
-    ddpal* pintropal = NULL;
+    sdl_pal* pintropal = NULL;
     // Gany, ezzel az egy nevvel pcxtopal(pic.cpp) elso harom byte-ot 0-azza:
     pcxtopal("intro.pcx", &pintropal);
 
@@ -175,7 +175,7 @@ void teljes(void) {
 /* Regi kilepes
 void kilep( void ) {
     pic8* ppic = new pic8( "vegekep.pcx" );
-    ddpal* pvegepal = NULL;
+    sdl_pal* pvegepal = NULL;
     pcxtopal( "vegekep.pcx", &pvegepal );
     pvegepal->set();
     bltfront( ppic );

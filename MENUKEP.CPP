@@ -7,7 +7,7 @@ static pic8 *Kisnevsima = NULL, *Kisnevgolyo = NULL;
 abc8* Pmenuabc = NULL;
 anim* Psisak = NULL;
 
-ddpal* Pmenupal = NULL;
+sdl_pal* Pmenupal = NULL;
 unsigned char Menupaltomb[768];
 
 /*void retusal( pic8* ppic ) {
@@ -47,7 +47,7 @@ void initmenukep2(void) {
     if (Pmenupal) {
         hiba("initmenukep2-ben Pmenupal!");
     }
-    pcxtopal("intro.pcx", &Pmenupal); // O new-ik egy ddpal-t
+    pcxtopal("intro.pcx", &Pmenupal); // O new-ik egy sdl_pal-t
     pcxtopal("intro.pcx", Menupaltomb);
 }
 

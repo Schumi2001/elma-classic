@@ -5,11 +5,11 @@ class pic8;
 class palyaleiro;
 class recorder;
 
-class ddpal {
+class sdl_pal {
     SDL_Color pal[256];
 
   public:
-    ddpal(unsigned char* tomb);
+    sdl_pal(unsigned char* tomb);
     void set(void);
 };
 

@@ -929,14 +929,14 @@ int pcxtopal(char* nev, unsigned char* pal) {
     return 1;
 }
 
-int pcxtopal(char* nev, ddpal** ppddpal) {
+int pcxtopal(char* nev, sdl_pal** ppsdl_pal) {
     unsigned char pal[768];
     pcxtopal(nev, pal);
     if (strcmp(nev, "intro.pcx") == 0) {
         // Egy kicsit gany, teljes.cpp-bol hivodik ilyen parameterrel.
         pal[0] = pal[1] = pal[2] = 0;
     }
-    *ppddpal = new ddpal(pal);
+    *ppsdl_pal = new sdl_pal(pal);
     return 1;
 }
 void mintavetel8(pic8* pdest, pic8* psour, int x1, int y1, int x2, int y2) {
@@ -985,7 +985,7 @@ void mintavetel8(pic8* pdest, pic8* psour) {
 }
 
 // Kirakja fizikaira lock es unlockkal (Ez most mindenkeppen 320x200-ba valt):
-/*void lassufizre( pic8* ppic, ddpal* ppal ) {
+/*void lassufizre( pic8* ppic, sdl_pal* ppal ) {
     if( ppic->getxsize() != 320 || ppic->getysize() != 200 )
         hiba( "lassufizre-ben ppic->getxsize != 320 || ppic->getysize != 200!" );
 

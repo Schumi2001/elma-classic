@@ -552,7 +552,7 @@ lgrfile::lgrfile(char* lgrnev) {
             p1biker = ppic;
             paltomb = getnewpalfromh(h);
             idonegtomb = makenegalttomb(paltomb);
-            pal = new ddpal(paltomb);
+            pal = new sdl_pal(paltomb);
             continue;
         }
         if (strcmpi(nev, "q2bike.pcx") == 0) {

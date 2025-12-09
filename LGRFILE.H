@@ -89,7 +89,7 @@ class lgrfile {
     koveto* pkoveto;
 
     unsigned char* paltomb;
-    ddpal* pal;
+    sdl_pal* pal;
     // paltomb alapjan ido kiirashoz negalt 256 byte-os lookup tabla:
     unsigned char* idonegtomb;
 

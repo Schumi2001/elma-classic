@@ -73,13 +73,13 @@ class pic8 {
 // Fizikai kepernyore mutat:
 // extern pic8* Pscr8;
 
-class ddpal;
+class sdl_pal;
 
 unsigned char* spriteadat8(pic8* pmask, unsigned char szin, unsigned short* pspritehossz);
 int pcxtopal(char* nev, unsigned char* pal);
-int pcxtopal(char* nev, ddpal** ppddpal);
+int pcxtopal(char* nev, sdl_pal** ppsdl_pal);
 
 void mintavetel8(pic8* pdest, pic8* psour, int x1, int y1, int x2, int y2);
 void mintavetel8(pic8* pdest, pic8* psour);
 
-// void lassufizre( pic8* ppic, ddpal* ppal );
+// void lassufizre( pic8* ppic, sdl_pal* ppal );

@@ -112,8 +112,8 @@ void unlockfrontbuffer(void) {
 
 // PALETTA:
 
-//	LPDIRECTDRAWPALETTE pddpal;
-ddpal::ddpal(unsigned char* tomb) {
+//	LPDIRECTDRAWPALETTE psdl_pal;
+sdl_pal::sdl_pal(unsigned char* tomb) {
     for (int i = 0; i < 256; i++) {
         pal[i].r = tomb[3 * i] << 2;
         pal[i].g = tomb[3 * i + 1] << 2;
@@ -122,4 +122,4 @@ ddpal::ddpal(unsigned char* tomb) {
     }
 }
 
-void ddpal::set(void) { SDL_SetPaletteColors(SDLSurfacePaletted->format->palette, pal, 0, 256); }
+void sdl_pal::set(void) { SDL_SetPaletteColors(SDLSurfacePaletted->format->palette, pal, 0, 256); }
