@@ -1,4 +1,8 @@
 #include "w_all.h"
+#include <SDL.h>
+#ifdef _WIN32
+#include <timeapi.h>
+#endif
 
 int Win_95 = 1;
 
@@ -7,19 +11,10 @@ int Margrafikus = 0;
 
 extern int Waitforretrace; // main.cpp es h-ban ven definialva
 
-// static LRESULT CALLBACK _export WndProc( HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam
-// );
-static long FAR PASCAL WndProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
-
 HINSTANCE ghInstance = 0;
 HWND GhWnd = 0;
 
-static char szAppName[100] = "Elasto Mania";
-static char szCaption[100] = "Elasto Mania";
-
 static int Aktiv = 0;
-
-static void* Dummypvoid = NULL;
 
 /*void jelol( char* text ) {
     FILE* h = fopen( "jelol.txt", "wt" );
@@ -42,86 +37,11 @@ static int Inicializalva = 0;
 
 DWORD DwDXVersion = 0;
 
-int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLine, int CmdShow) {
-    /*void __cdecl egysor( unsigned char lyuk,  unsigned char szam,
-             unsigned char* sor, unsigned char* tomb,
-             long futox, long futoy, long dx, long dy );
-    egysor( 0,  1, NULL, NULL, 2, 3, 4, 5 );
-    */
-
-    /*void segedfv( void );
-    segedfv();
-    */
-
-    WNDCLASS wndclass;
-
-    /*semmitor(); //ez itt nem kell
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    semmitor(); semmitor(); semmitor(); semmitor(); semmitor();
-    */
-
-    if (!hPrevInstance) {
-        // Register parent window class:
-        wndclass.style = CS_HREDRAW | CS_VREDRAW | CS_BYTEALIGNCLIENT;
-        wndclass.lpfnWndProc = (WNDPROC)WndProc;
-        wndclass.cbClsExtra = 0;
-        wndclass.cbWndExtra = 0;
-        wndclass.hInstance = hInstance;
-        wndclass.hIcon = LoadIcon(hInstance, szAppName);
-        wndclass.hCursor = LoadCursor(NULL, IDC_ARROW);
-        wndclass.hbrBackground = (HBRUSH)GetStockObject(GRAY_BRUSH);
-        wndclass.lpszMenuName = (LPSTR)NULL;
-        wndclass.lpszClassName = szAppName;
-
-        if (!RegisterClass(&wndclass)) {
-            return 0;
-        }
+int main(int argc, char* argv[]) {
+    if (sdl_init()) {
+        hiba("SDL: could not create window!");
+        return 1;
     }
-
-    ghInstance = hInstance;
-
-    // GhWnd = CreateWindowEx( WS_EX_TOPMOST, szAppName, szCaption, WS_POPUP,
-    //						0, 0, 600, 400,
-    //						(HWND)NULL, (HMENU)NULL, hInstance, (LPVOID)NULL );
-
-    // DirectDraw-hoz ez volt:
-    GhWnd = CreateWindowEx(WS_EX_TOPMOST, szAppName, szCaption, WS_POPUP, 0, 0, 100, 60, (HWND)NULL,
-                           (HMENU)NULL, hInstance, (LPVOID)NULL);
-
-    /*ghWnd    = CreateWindowEx (WS_EX_TOPMOST, szAppName,
-                              szCaption, WS_POPUP,
-                              0, 0, 640, 480,
-                              (HWND)NULL, (HMENU)NULL,
-                              hInstance, (LPVOID)NULL) ;*/
-
-    if (!GhWnd) {
-        return (FALSE);
-    }
-
-    ShowWindow(GhWnd, CmdShow);
-    UpdateWindow(GhWnd);
 
     Aktiv = 1;
 
@@ -183,7 +103,6 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
         Waitforretrace = 0;
     }
 
-    ddinit();
     Inicializalva = 1;
 
     // Ez csak palettat allitja be:
@@ -199,12 +118,11 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
     // Ide mar nem szabad jonnie, kene valami uzenet!
     hiba("WinMain vegere erkezett!");
 
-    Dummypvoid = &lpszCmdLine;
-
     return 0;
 }
 
 void mv_check(/*char* hivta,*/ int nemkellnyomas) {
+#ifdef _WIN32
     void hang(void /*char* hivta*/);
     hang(/*hivta*/);
     int elso = 1; // Hogy meg !Gameloop eseten is bejojjon:
@@ -225,6 +143,7 @@ void mv_check(/*char* hivta,*/ int nemkellnyomas) {
         return;
     }
     mkw_setkeydown();
+#endif
 }
 
 // Ez itt torlendo:
@@ -240,6 +159,7 @@ static int Lmouselent = 0, Rmouselent = 0;
 static int Menubollepettki = 0;
 
 static long FAR PASCAL WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+#ifdef _WIN32
     switch (msg) {
     case WM_CLOSE:
         extern int Editorban_dialnak;
@@ -247,7 +167,6 @@ static long FAR PASCAL WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
         if (Menubollepettki || (!Aktiv && !(Editorban_dialnak && Valtozott))) {
 
             if (!Menubollepettki && Inicializalva) {
-                ddfinish();
                 releaseDI();
             }
             DestroyWindow(hWnd);
@@ -297,12 +216,13 @@ static long FAR PASCAL WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam
         return DefWindowProc(hWnd, msg, wParam, lParam);
     }
     return 0;
+#endif
 }
 
 void mv_exit(char* text) {
+#ifdef _WIN32
     // PostQuitMessage( 0 );
     // mv_check();
-    ddfinish();
     releaseDI();
     // MessageBox( NULL, text, "Message", MB_OK | MB_ICONINFORMATION);
     Menubollepettki = 1;
@@ -312,6 +232,9 @@ void mv_exit(char* text) {
     while (1) {
         mv_check(/*"W_V mv_exit-ben"*/);
     }
+#else
+    exit(0);
+#endif
 }
 
 static double Startido = 0;
@@ -388,7 +311,11 @@ static void directhiba(char* text1, char* text2, char* text3, char* text4) {
             strcat(text, "   ");
             strcat(text, text4);
         }
+#ifdef _WIN32
         MessageBox(NULL, text, "Message", MB_OK | MB_ICONINFORMATION);
+#else
+        printf(text);
+#endif
     }
     mv_exit();
 }

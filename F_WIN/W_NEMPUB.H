@@ -1,8 +1,8 @@
 // w_main.h
+#include <SDL_syswm.h>
 
 // M_DD.H-bol nem publikus reszek:
-void ddfinish(void);
-void ddinit(void);
+int sdl_init(void);
 
 // M_V.H-bol nem publikus reszek:
 extern HWND GhWnd;           // Window handler
