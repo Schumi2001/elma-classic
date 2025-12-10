@@ -33,7 +33,7 @@ abc8::abc8(char* nev) {
     }
     FILE* h = qopen(nev, "rb");
     if (!h) {
-        hiba("Nem tudta megnyitni abc konstruktor file-t!: ", nev);
+        hiba("Opening abc constructor was unsuccessful!: ", nev);
         return;
     }
     char tmp[20];
